@@ -10,8 +10,9 @@ def request_reading():
     print(reading)
 
 while True:
-    command = raw_input("Enter command: 1-Toggle LED, r-read A0:")
-    if command == '1':
-        bus.write_byte(SLAVE_ADDRESS, ord('1'))
-    elif command == 'r':
-        request_reading()
+    txt = str(raw_input("Enter some text to send it to Arduino:"))
+    bus.write_byte(SLAVE_ADDRESS, ord(txt))
+    # if command == '1':
+    #     bus.write_byte(SLAVE_ADDRESS, ord('1'))
+    # elif command == 'r':
+    #     request_reading()
