@@ -7,8 +7,7 @@ var Nes = require('nes');
 // Create a server with a host and port
 const server = new Hapi.Server();
 server.connection({
-    host: 'localhost',
-    port: 3000
+    port : process.env.PORT || 4000
 });
 
 server.register([Nes, Inert], function (err) {
