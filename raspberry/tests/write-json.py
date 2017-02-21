@@ -15,9 +15,7 @@ def convert_json(string):
     
 
 if __name__ == '__main__':
-    json_string = '{"R": 255, "G": 255, "B": 255}'
-    command, values = convert_json(json_string)
-
     while True:
+        json_string = str(raw_input('Input a valid JSON: '))
+        command, values = convert_json(json_string)
         bus.write_i2c_block_data(address, command, values)
-        time.sleep(3)
