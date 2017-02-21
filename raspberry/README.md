@@ -28,6 +28,12 @@ pip install cffi
 pip install smbus-cffi
 ```
 
+Create a .env file
+
+```
+cp .env.example .env
+```
+
 Now you can start the application with:
 
 ```
