@@ -16,12 +16,21 @@ server.register([Nes, Inert], function (err) {
     }
     server.subscription('/led');
     server.route({
+      method: 'POST',
+      path: '/ping',
+      config: {
+        id: 'ping',
+        handler: function (request, reply) {
+          server.publish('/ping',{ping})
+        }
+      }
+    });
+    server.route({
         method: 'POST',
         path: '/led',
         config: {
             id: 'LED',
             handler: function (request, reply) {
-              console.log(request.payload);
               server.publish('/led', {R: Number(request.payload.r),
                                       G: Number(request.payload.g),
                                       B: Number(request.payload.b)
@@ -30,23 +39,34 @@ server.register([Nes, Inert], function (err) {
             }
         }
     });
-
-    server.start(function (err) { /* ... */ });
-});
-// server.route({
-//     method: 'POST',
-//     path:'/LED',
-//     handler: function (request, reply) {
-//       console.log(parseInt(request.payload.r));
-//       return reply({R: parseInt(request.payload.r), G: parseInt(request.payload.g), B: parseInt(request.payload.b)});
-//     }
-// });
-
-server.register(Inert, (err) => {
-    if (err) {
-        throw err;
-    }
-
+    server.subscription('/servo');
+    server.route({
+        method: 'POST',
+        path: '/servo',
+        config: {
+            id: 'servo',
+            handler: function (request, reply) {
+              server.publish('/servo', {S1: Number(request.payload.s1),
+                                      S2: Number(request.payload.s2)
+                                    });
+              reply.file('./index.html');
+            }
+        }
+    });
+    server.subscription('/status');
+    server.route({
+        method: 'POST',
+        path: '/status',
+        config: {
+            id: 'status',
+            handler: function (request, reply) {
+              console.log(request.payload);
+              server.publish('/status', {Status: Number(request.payload.status)
+                                    });
+              reply.file('./index.html');
+            }
+        }
+    });
     server.route({
         method: 'GET',
         path: '/static',
@@ -54,14 +74,15 @@ server.register(Inert, (err) => {
             reply.file('./index.html');
         }
     });
-});
+    server.start((err) => {
+
+        if (err) {
+            throw err;
+        }
+        console.log('Server running at:', server.info.uri);
+    });
+
+});;
 
 
 // Start the server
-server.start((err) => {
-
-    if (err) {
-        throw err;
-    }
-    console.log('Server running at:', server.info.uri);
-});
