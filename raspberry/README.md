@@ -1,6 +1,6 @@
 # Orbix Raspberry pi side implementation
 
-The application works on [Raspbian jessie lite](https://www.raspberrypi.org/downloads/raspbian/) 
+The application works on [Raspbian jessie lite](https://www.raspberrypi.org/downloads/raspbian/)
 
 ## Set up raspbian
 
@@ -27,6 +27,8 @@ source venv/bin/activate
 pip install cffi
 pip install smbus-cffi
 ```
+cffi and sumbus is for i2c communication but it's already included in requirement.txt so instead of the last two lines, you just type the following.
+`pip install -r requirement.txt`
 
 Create a .env file
 
