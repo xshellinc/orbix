@@ -14,13 +14,18 @@ server.register([Nes, Inert], function (err) {
     if (err) {
         throw err;
     }
+    server.subscription('/led');
     server.route({
         method: 'POST',
-        path: '/static',
+        path: '/led',
         config: {
             id: 'LED',
             handler: function (request, reply) {
               console.log(request.payload);
+              server.publish('/led', {R: Number(request.payload.r),
+                                      G: Number(request.payload.g),
+                                      B: Number(request.payload.b)
+                                    });
               reply.file('./index.html');
             }
         }
