@@ -3,18 +3,46 @@
 const Hapi = require('hapi');
 const Good = require('good');
 const Inert = require('inert')
-var Nes = require('nes');
+const Nes = require('nes');
+const Path = require('path');
 // Create a server with a host and port
-const server = new Hapi.Server();
-server.connection({
-    port : process.env.PORT || 4000
-});
-
+const server = new Hapi.Server(
+  {connections: {
+    routes: {
+      files: {
+        relativeTo: Path.join(__dirname, 'public')
+      }
+    }
+  }}
+);
+// server.connection({
+//     port : process.env.PORT || 4000
+// });
+server.connection({ port: 3000, host: 'localhost' });
+function arrange(p1) {
+    return Number(p1)%255;
+}
 server.register([Nes, Inert], function (err) {
     if (err) {
         throw err;
     }
     server.subscription('/led');
+    server.subscription('/servo');
+    server.subscription('/status');
+
+    server.route({
+      method:'GET',
+      path: '/{param*}',
+      config: {
+        handler: {
+          directory: {
+            path: '.',
+            redirectToSlash: true,
+            index: true
+          }
+        }
+      }
+    });
     server.route({
       method: 'POST',
       path: '/ping',
@@ -31,29 +59,28 @@ server.register([Nes, Inert], function (err) {
         config: {
             id: 'LED',
             handler: function (request, reply) {
-              server.publish('/led', {R: Number(request.payload.r),
-                                      G: Number(request.payload.g),
-                                      B: Number(request.payload.b)
+              server.publish('/led', {R: arrange(request.payload.r),
+                                      G: arrange(request.payload.g),
+                                      B: arrange(request.payload.b)
                                     });
-              reply.file('./index.html');
+              return reply().code(204);
             }
         }
     });
-    server.subscription('/servo');
     server.route({
         method: 'POST',
         path: '/servo',
         config: {
             id: 'servo',
             handler: function (request, reply) {
-              server.publish('/servo', {S1: Number(request.payload.s1),
-                                      S2: Number(request.payload.s2)
+              console.log(arrange(request.payload.s1));
+              server.publish('/servo', {S1: arrange(request.payload.s1),
+                                      S2: arrange(request.payload.s2)
                                     });
-              reply.file('./index.html');
+              return reply().code(204);
             }
         }
     });
-    server.subscription('/status');
     server.route({
         method: 'POST',
         path: '/status',
@@ -61,17 +88,10 @@ server.register([Nes, Inert], function (err) {
             id: 'status',
             handler: function (request, reply) {
               console.log(request.payload);
-              server.publish('/status', {Status: Number(request.payload.status)
+              server.publish('/status', {Status: arrange(request.payload.status)
                                     });
-              reply.file('./index.html');
+              return reply().code(204);
             }
-        }
-    });
-    server.route({
-        method: 'GET',
-        path: '/static',
-        handler: function (request, reply) {
-            reply.file('./index.html');
         }
     });
     server.start((err) => {
