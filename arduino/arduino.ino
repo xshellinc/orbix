@@ -12,9 +12,9 @@ void updateStatusLed(uint8_t brightness);
 void updateRedLed   (uint8_t brightness);
 void updateGreenLed (uint8_t brightness);
 void updateBlueLed  (uint8_t brightness);
-void updateServo1   (int8_t degree);
-void updateServo2   (int8_t degree);
-uint16_t degreeToWord(int8_t degree);
+void updateServo1   (float degree);
+void updateServo2   (float degree);
+uint16_t degreeToWord(int8_t degree, int min_rad, int max_rad, uint16_t min, uint16_t max);
 
 // pin numbers
 const int LED_R = 11;
@@ -35,9 +35,10 @@ void setup() {
   setupTimer2();
   setupTimer1();
 
+  //  OCR1B = 1920;
+  //  OCR1B = 3870;
   // 出力ピン設定
   setupOutputPin();
-
   bitSet(TCCR0B, CS00); // 分周なしタイマスタート
   bitSet(TCCR1B, CS11); // 分周なしタイマスタート
   bitSet(TCCR2B, CS20); // 分周なしタイマスタート
@@ -128,17 +129,14 @@ void setupOutputPin() {
   pinMode(Servo_1, OUTPUT);
 }
 
-// y = ax + b
-uint16_t maxWord = 4430;
-uint16_t minWord = 980;
-float a = (float) (maxWord - minWord) / 180;
-float b = (float) (maxWord + minWord) / 2;
+uint16_t degreeToWord(float degree, int min_rad, int max_rad, uint16_t min, uint16_t max) {
+  float a = (float) (max - min) / (abs(min_rad) + abs(max_rad));
+  float b = (float) (max + min) / 2;
 
-uint16_t degreeToWord(int8_t degree) {
   uint16_t word = (float)  a * degree + b;
 
-  if (word < minWord) word = minWord;
-  if (word > maxWord) word = maxWord;
+  if (word < min) word = min;
+  if (word > max) word = max;
 
   return word;
 }
@@ -178,12 +176,12 @@ void updateBlueLed(uint8_t brightness) {
   }
   OCR0A = brightness;
 }
-void updateServo1(int8_t degree) {
-  OCR1A = degreeToWord(degree);
+void updateServo1(float degree) {
+  OCR1A = degreeToWord(degree, -90, +90, 980, 4430);
 }
 
-void updateServo2(int8_t degree) {
-  OCR1B = degreeToWord(degree);
+void updateServo2(float degree) {
+  OCR1B = degreeToWord(degree, -180, +180, 1920, 3870);
 }
 
 
