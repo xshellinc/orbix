@@ -118,7 +118,7 @@ void setupTimer1() {
   ICR1 = 40000;   // 16MHz/8分周/40000 count => 20ms周期に設定
 
   updateServo1(0);
-  updateServo2(0);
+  updateServo2(180);
 }
 void setupOutputPin() {
   pinMode(LED_R, OUTPUT);
