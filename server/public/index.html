@@ -24,16 +24,16 @@
   <h3>Servo</h3>
   <div>
     <form method="post" action="/servo">
-    <h4>S1</h4><input type="range" name="s1" value=0 min=-90 max=90 onchange="this.form.submit()">
+    <h4>Upper rotation</h4><input type="range" name="s1" value=0 min=-90 max=90 onchange="this.form.submit()">
     </form>
     <form method="post" action="/servo">
-    <h4>S2</h4><input type="range" name="s2" value=180 min=-180 max=180 onchange="this.form.submit()">
+    <h4>Arm angle</h4><input type="range" name="s2" value=180 min=-180 max=180 onchange="this.form.submit()">
     </form>
   </div>
   <h3>Status Lamp</h3>
   <div>
     <form method="post" action="/status">
-    <h4>Status Lamp</h4><input type="range" name="status" value=0 min=0 max=255 onchange="this.form.submit()">
+      <input type="range" name="status" value=0 min=0 max=255 onchange="this.form.submit()">
     </form>
   </div>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>

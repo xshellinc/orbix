@@ -8,7 +8,7 @@ let red = 0;
 let blue = 0;
 let green =0;
 let s1 =0;
-let s2=0;
+let s2=180;
 const server = new Hapi.Server({
   connections: {
     routes: {
