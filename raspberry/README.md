@@ -18,26 +18,20 @@ git clone https://github.com/xshellinc/orbix.git
 cd orbix/raspberry/
 ```
 
-We recommend to use [virtualenv](https://virtualenv.pypa.io/en/stable/) for create isolated Python environments.
-
-```
-virtualenv venv
-source venv/bin/activate
-
-pip install cffi
-pip install smbus-cffi
-```
-cffi and sumbus is for i2c communication but it's already included in requirement.txt so instead of the last two lines, you just type the following.
-`pip install -r requirement.txt`
-
-Create a .env file
+Create a .env file.
 
 ```
 cp .env.example .env
 ```
 
+Install dependencies.
+
+```
+npm install
+```
+
 Now you can start the application with:
 
 ```
-python main.py
+node index.js
 ```
