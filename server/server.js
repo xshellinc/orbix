@@ -62,7 +62,6 @@ server.register([Nes, Inert], function (err) {
         if (request.payload.b) {
           blue=request.payload.b
         }
-        console.log(red, blue, green)
         server.publish('/led',
           {
             R: Number(red),
