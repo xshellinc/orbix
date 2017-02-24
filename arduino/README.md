@@ -26,7 +26,7 @@ cd orbix/arduino/
 ### Servo control
 
 ```
-{"S1":-90~+90,"S2":-90~+90}
+{"S1":-90~+90,"S2":-180~+180} # Default : {"S1":0,"S2":+180}
 ```
 
 Decimals are allowed.
