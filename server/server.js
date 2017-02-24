@@ -53,9 +53,16 @@ server.register([Nes, Inert], function (err) {
     config: {
       id: 'LED',
       handler: function (request, reply) {
-        red = request.payload.r
-        green=request.payload.g
-        blue=request.payload.b
+        if (request.payload.r) {
+          red = request.payload.r
+        }
+        if (request.payload.g) {
+          green=request.payload.g
+        }
+        if (request.payload.b) {
+          blue=request.payload.b
+        }
+        console.log(red, blue, green)
         server.publish('/led',
           {
             R: Number(red),
@@ -74,9 +81,14 @@ server.register([Nes, Inert], function (err) {
     config: {
       id: 'servo',
       handler: function (request, reply) {
+      if (request.payload.s1) {
+        s1=request.payload.s1
+      }
+      if (request.payload.s2) {
+        s2=request.payload.s2
+      }
       server.publish('/servo',
-      s1=request.payload.s1
-      s2=request.payload.s2
+
         {
           S1: Number(s1),
           S2: Number(s2)
