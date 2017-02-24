@@ -2,33 +2,44 @@
 <html>
   <head>
     <meta charset="utf-8">
+
     <!-- <script type="text/javascript" src="colorpicker.js"></script> -->
-    <title></title>
+    <title>Robot Arm LED</title>
   </head>
   <body>
+    <section id = "led">
     <h3>LED</h3>
     <div>
     <form method="post" action="/led">
-    R<input type="number" name="r", value=0>
-    G<input type="number" name="g", value=0>
-    B<input type="number" name="b", value=0>
-    <input type = "submit" value = "submit">
-  </form>
+    <h4>R <input type="range" name="r" value=0 min=0 max=255 onchange="this.form.submit()"></h4>
+    </form>
+    <form method="post" action="/led">
+    <h4>G <input type="range" name="g" value=0 min=0 max=255 onchange="this.form.submit()"></h4>
+    </form>
+    <form method="post" action="/led">
+    <h4>B <input type="range" name="b" value=0 min=0 max=255 onchange="this.form.submit()"></h4>
+    </form>
+</section>
   </div>
   <h3>Servo</h3>
   <div>
     <form method="post" action="/servo">
-    S1<input type="number" name="s1" value=0>
-    S2<input type="number" name="s2" value=0>
-    <input type = "submit" value = "submit">
-      </form>
+    <h4>S1</h4><input type="range" name="s1" value=0 min=-90 max=90 onchange="this.form.submit()">
+    </form>
+    <form method="post" action="/servo">
+    <h4>S1</h4><input type="range" name="s1" value=180 min=-180 max=180 onchange="this.form.submit()">
+    </form>
   </div>
   <h3>Status Lamp</h3>
   <div>
     <form method="post" action="/status">
-    Status Lamp<input type="number" name="status" value=0>
-    <input type = "submit" value = "submit">
-      </form>
+    <h4>Status Lamp</h4><input type="range" name="status" value=0 min=0 max=255 onchange="this.form.submit()">
+    </form>
   </div>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.0/rangeslider.min.js"></script>
+
   </body>
+
 </html>

@@ -4,6 +4,7 @@ const Inert = require('inert')
 const Nes = require('nes');
 const Path = require('path');
 
+
 const server = new Hapi.Server({
   connections: {
     routes: {
@@ -18,9 +19,6 @@ server.connection({
   port : process.env.PORT || 4000
 });
 
-function arrange(p1) {
-  return Number(p1)%255;
-}
 
 server.register([Nes, Inert], function (err) {
   if (err) {
@@ -53,9 +51,9 @@ server.register([Nes, Inert], function (err) {
       handler: function (request, reply) {
         server.publish('/led',
           {
-            R: arrange(request.payload.r),
-            G: arrange(request.payload.g),
-            B: arrange(request.payload.b)
+            R: Number(request.payload.r),
+            G: Number(request.payload.g),
+            B: Number(request.payload.b)
           }
         );
         return reply().code(204);
@@ -71,8 +69,8 @@ server.register([Nes, Inert], function (err) {
       handler: function (request, reply) {
       server.publish('/servo',
         {
-          S1: arrange(request.payload.s1),
-          S2: arrange(request.payload.s2)
+          S1: Number(request.payload.s1),
+          S2: Number(request.payload.s2)
         }
       );
       return reply().code(204);
@@ -86,7 +84,7 @@ server.register([Nes, Inert], function (err) {
     config: {
       id: 'status',
       handler: function (request, reply) {
-        server.publish('/status', { Status: arrange(request.payload.status) });
+        server.publish('/status', { Status: Number(request.payload.status) });
         return reply().code(204);
       }
     }
